@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Creator 10K</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Creator<span>10K</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="#creators">Creators</a>
+    </nav>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Discover
+            <span>YouTube Creators</span>
+        </h1>
+
+        <p>
+            Explore the world's most subscribed
+            YouTube channels across different categories.
+        </p>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for a creator..."
+            >
+
+            <button onclick="searchCreators()">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <h2 id="totalCreators">
+            -
+        </h2>
+
+        <p>
+            Creators
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalCategories">
+            -
+        </h2>
+
+        <p>
+            Categories
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalCountries">
+            -
+        </h2>
+
+        <p>
+            Countries
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="filters">
+
+    <select id="categoryFilter">
+
+        <option value="">
+            All Categories
+        </option>
+
+    </select>
+
+
+    <select id="countryFilter">
+
+        <option value="">
+            All Countries
+        </option>
+
+    </select>
+
+
+    <button onclick="searchCreators()">
+        Apply Filters
+    </button>
+
+</section>
+
+
+<section id="creators">
+
+    <div class="section-title">
+
+        <h2>
+            Top YouTube Creators
+        </h2>
+
+        <p>
+            Ranked by subscribers
+        </p>
+
+    </div>
+
+
+    <div
+        id="creatorGrid"
+        class="creator-grid">
+    </div>
+
+</section>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ creator.channel_name }} | Creator10K
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        Creator<span>10K</span>
+    </div>
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/#creators">
+            Creators
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="profile-container">
+
+
+    <div class="profile-card">
+
+
+        <!-- ========================================= -->
+        <!-- PROFILE IMAGE -->
+        <!-- ========================================= -->
+
+        {% if youtube and youtube.snippet.thumbnails %}
+
+            <img
+                src="{{ youtube.snippet.thumbnails.high.url }}"
+                alt="{{ youtube.snippet.title }}"
+                class="profile-image"
+            >
+
+        {% elif creator.profile_picture_url %}
+
+            <img
+                src="{{ creator.profile_picture_url }}"
+                alt="{{ creator.channel_name }}"
+                class="profile-image"
+            >
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- CHANNEL NAME -->
+        <!-- ========================================= -->
+
+        <h1>
+
+            {% if youtube %}
+
+                {{ youtube.snippet.title }}
+
+            {% else %}
+
+                {{ creator.channel_name }}
+
+            {% endif %}
+
+        </h1>
+
+
+
+        <!-- ========================================= -->
+        <!-- RANK -->
+        <!-- ========================================= -->
+
+        <div class="profile-rank">
+
+            Rank #{{ creator.rank }}
+
+        </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- COUNTRY -->
+        <!-- ========================================= -->
+
+        <p class="profile-country">
+
+            {% if youtube and youtube.snippet.country %}
+
+                🌎 {{ youtube.snippet.country }}
+
+            {% elif creator.country %}
+
+                🌎 {{ creator.country }}
+
+            {% else %}
+
+                🌎 Country not available
+
+            {% endif %}
+
+        </p>
+
+
+
+        <!-- ========================================= -->
+        <!-- PROFILE STATISTICS -->
+        <!-- ========================================= -->
+
+        <div class="profile-stats">
+
+
+            <!-- SUBSCRIBERS -->
+
+            <div class="profile-stat">
+
+                <span class="stat-number">
+
+                    {% if youtube and youtube.statistics.subscriberCount %}
+
+                        {{ "{:,}".format(
+                            youtube.statistics.subscriberCount | int
+                        ) }}
+
+                    {% else %}
+
+                        {{ "{:,}".format(
+                            creator.subscribers or 0
+                        ) }}
+
+                    {% endif %}
+
+                </span>
+
+                <span class="stat-label">
+
+                    Subscribers
+
+                </span>
+
+            </div>
+
+
+
+            <!-- TOTAL VIEWS -->
+
+            <div class="profile-stat">
+
+                <span class="stat-number">
+
+                    {% if youtube and youtube.statistics.viewCount %}
+
+                        {{ "{:,}".format(
+                            youtube.statistics.viewCount | int
+                        ) }}
+
+                    {% else %}
+
+                        {{ "{:,}".format(
+                            creator.views or 0
+                        ) }}
+
+                    {% endif %}
+
+                </span>
+
+                <span class="stat-label">
+
+                    Total Views
+
+                </span>
+
+            </div>
+
+
+
+            <!-- VIDEOS -->
+
+            <div class="profile-stat">
+
+                <span class="stat-number">
+
+                    {% if youtube and youtube.statistics.videoCount %}
+
+                        {{ "{:,}".format(
+                            youtube.statistics.videoCount | int
+                        ) }}
+
+                    {% else %}
+
+                        N/A
+
+                    {% endif %}
+
+                </span>
+
+                <span class="stat-label">
+
+                    Videos
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ===================================== -->
+            <!-- SUBSCRIBER GROWTH -->
+            <!-- ===================================== -->
+
+            <div class="profile-stat">
+
+                <span class="stat-number">
+
+                    {% if subscriber_growth is not none %}
+
+                        {% if subscriber_growth >= 0 %}
+
+                            +{{ "{:,}".format(
+                                subscriber_growth
+                            ) }}
+
+                        {% else %}
+
+                            {{ "{:,}".format(
+                                subscriber_growth
+                            ) }}
+
+                        {% endif %}
+
+                    {% else %}
+
+                        N/A
+
+                    {% endif %}
+
+                </span>
+
+
+                <span class="stat-label">
+
+                    Subscribers / Hour
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- YOUTUBE API STATUS -->
+        <!-- ========================================= -->
+
+        {% if youtube %}
+
+            <div class="profile-section">
+
+                <h2>
+                    🟢 Live YouTube Data
+                </h2>
+
+                <p>
+                    Statistics fetched directly from
+                    the YouTube Data API.
+                </p>
+
+            </div>
+
+        {% elif youtube_error %}
+
+            <div class="profile-section">
+
+                <h2>
+                    ⚠️ YouTube API
+                </h2>
+
+                <p>
+                    Unable to retrieve live YouTube data.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- DESCRIPTION -->
+        <!-- ========================================= -->
+
+        {% if youtube and youtube.snippet.description %}
+
+            <div class="profile-section">
+
+                <h2>
+                    About the Channel
+                </h2>
+
+                <p>
+                    {{ youtube.snippet.description }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- CHANNEL CREATED -->
+        <!-- ========================================= -->
+
+        {% if youtube and youtube.snippet.publishedAt %}
+
+            <div class="profile-section">
+
+                <h2>
+                    Channel Created
+                </h2>
+
+                <p>
+                    {{ youtube.snippet.publishedAt[:10] }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- TOPICS -->
+        <!-- ========================================= -->
+
+        {% if creator.topic_groups %}
+
+            <div class="profile-section">
+
+                <h2>
+                    Topics
+                </h2>
+
+                <p>
+                    {{ creator.topic_groups }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- SUBTOPICS -->
+        <!-- ========================================= -->
+
+        {% if creator.subtopics %}
+
+            <div class="profile-section">
+
+                <h2>
+                    Subtopics
+                </h2>
+
+                <p>
+                    {{ creator.subtopics }}
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- CHANNEL ID -->
+        <!-- ========================================= -->
+
+        <div class="profile-section">
+
+            <h2>
+                Channel ID
+            </h2>
+
+            <p class="channel-id">
+
+                {% if youtube %}
+
+                    {{ youtube.id }}
+
+                {% else %}
+
+                    {{ creator.channel_id }}
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- YOUTUBE BUTTON -->
+        <!-- ========================================= -->
+
+        {% if creator.profile_url %}
+
+            <a
+                href="{{ creator.profile_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="youtube-button"
+            >
+                ▶ Visit YouTube Channel
+            </a>
+
+        {% elif youtube %}
+
+            <a
+                href="https://www.youtube.com/channel/{{ youtube.id }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="youtube-button"
+            >
+                ▶ Visit YouTube Channel
+            </a>
+
+        {% endif %}
+
+
+
+        <br>
+        <br>
+
+
+
+        <!-- BACK BUTTON -->
+
+        <a
+            href="/"
+            class="back-button"
+        >
+            ← Back to Creators
+        </a>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>
